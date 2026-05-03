@@ -132,7 +132,7 @@ export default function AuthPopup({
         {showEmailSent && (
           <div className="mt-3 p-2 bg-green-500/20 border border-green-500/30 rounded-lg">
             <p className="text-green-400 text-xs text-center">
-              Check your email! We've sent a verification link to activate your account.
+              Check your email! We&apos;ve sent a verification link to activate your account.
             </p>
           </div>
         )}
@@ -140,7 +140,7 @@ export default function AuthPopup({
         <div className="pt-2 text-sm text-center">
           {authType === "login" ? (
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button
                 onClick={() => switchAuthType("register")}
                 className="text-[#F28A0F] font-bold"

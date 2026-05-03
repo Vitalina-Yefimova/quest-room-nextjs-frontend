@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from "react";
-import BaseForm from "@/components/generics/forms/BaseForm";
-import { User } from "@/utils/interfaces";
-import { changePassword } from "@/actions/user";
-import { changePasswordSchema, type ChangePasswordFormValues } from "./schemas/profileSchemas";
+import { changePassword } from '@/actions/user';
+import BaseForm from '@/components/generics/forms/BaseForm';
+import { User } from '@/utils/interfaces';
+import { useState } from 'react';
+import { changePasswordSchema, type ChangePasswordFormValues } from './schemas/profileSchemas';
 
 interface ChangePasswordSectionProps {
   user: User;
@@ -17,16 +17,16 @@ export default function ChangePasswordSection({ user }: ChangePasswordSectionPro
     const result = await changePassword(data);
 
     if (!result.success) {
-      throw new Error(result.error || "Failed to change password");
+      throw new Error(result.error || 'Failed to change password');
     }
 
     setSuccess(true);
   };
 
   const fields = [
-    { name: "oldPassword", label: "Old Password", type: "password" },
-    { name: "newPassword", label: "New Password", type: "password" },
-    { name: "confirmPassword", label: "Confirm Password", type: "password" },
+    { name: 'oldPassword', label: 'Old Password', type: 'password' },
+    { name: 'newPassword', label: 'New Password', type: 'password' },
+    { name: 'confirmPassword', label: 'Confirm Password', type: 'password' },
   ];
 
   return (

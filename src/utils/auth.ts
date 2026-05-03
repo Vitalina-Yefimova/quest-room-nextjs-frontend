@@ -5,7 +5,7 @@ export const getAuthToken = async (): Promise<string | null> => {
   try {
     const cookieStore = await cookies();
     return cookieStore.get(COOKIE_NAMES.ACCESS_TOKEN)?.value || null;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
@@ -19,7 +19,7 @@ export const setAuthToken = async (token: string): Promise<void> => {
       sameSite: 'strict',
       maxAge: 60 * 60 * 24,
     });
-  } catch (error) {
+  } catch {
   }
 };
 
@@ -27,6 +27,6 @@ export const removeAuthToken = async (): Promise<void> => {
   try {
     const cookieStore = await cookies();
     cookieStore.delete(COOKIE_NAMES.ACCESS_TOKEN);
-  } catch (error) {
+  } catch {
   }
 };

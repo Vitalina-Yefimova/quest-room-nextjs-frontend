@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { APIProvider, Map, Marker, useMapsLibrary } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { NEXT_PUBLIC_GOOGLE_MAPS_API_KEY } from '@/utils/config';
 
 function MapWithMarker() {
   const maps = useMapsLibrary('maps');
@@ -10,25 +11,29 @@ function MapWithMarker() {
   };
 
   return (
-    <Map 
-      defaultCenter={center} 
-      defaultZoom={14} 
+    <Map
+      defaultCenter={center}
+      defaultZoom={14}
       className="w-full h-full rounded-lg"
       mapId="quests-calgary-map"
     >
       <Marker
         position={center}
-        icon={maps ? {
-          url: "/location-map-icon.svg",
-          scaledSize: new (maps as any).Size(47.5, 61),
-        } : undefined}
+        icon={
+          maps && typeof google !== 'undefined'
+            ? {
+                url: '/location-map-icon.svg',
+                scaledSize: new google.maps.Size(47.5, 61),
+              }
+            : undefined
+        }
       />
     </Map>
   );
 }
 
 export default function GoogleMap() {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const apiKey = NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
     return (

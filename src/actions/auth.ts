@@ -1,6 +1,7 @@
 'use server';
 
 import { setAuthToken, removeAuthToken, getAuthToken } from '@/utils/auth';
+import { API_BASE_URL, NEXT_PUBLIC_APP_URL } from '@/utils/config';
 import { signInSchema, signUpSchema, phoneAuthSchema, codeVerificationSchema, type SignInFormValues, type SignUpFormValues, type PhoneAuthFormValues, type CodeVerificationFormValues } from '@/components/content/forms/schemas/authSchemas';
 
 export const emailAuth = async (
@@ -11,7 +12,7 @@ export const emailAuth = async (
     if (authType === 'login') {
       const validatedData = signInSchema.parse(data);
 
-      const response = await fetch(`${process.env.API_BASE_URL}/auth/sign-in`, {
+      const response = await fetch(`${API_BASE_URL}/auth/sign-in`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(validatedData),
@@ -34,10 +35,10 @@ export const emailAuth = async (
         email: validatedData.email,
         phone: validatedData.phone,
         password: validatedData.password,
-        frontendUrl: `${process.env.NEXT_PUBLIC_APP_URL}/verify`,
+        frontendUrl: `${NEXT_PUBLIC_APP_URL}/verify`,
       };
 
-      const registerResponse = await fetch(`${process.env.API_BASE_URL}/auth/sign-up`, {
+      const registerResponse = await fetch(`${API_BASE_URL}/auth/sign-up`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -60,7 +61,7 @@ export const emailAuth = async (
 
 export const verifyEmail = async (token: string) => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/auth/verify`, {
+    const response = await fetch(`${API_BASE_URL}/auth/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
@@ -97,7 +98,7 @@ export const phoneAuth = async (
     if (step === 'phone') {
       const validatedData = phoneAuthSchema.parse(data);
 
-      const response = await fetch(`${process.env.API_BASE_URL}/auth/send-otp`, {
+      const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: validatedData.phone }),
@@ -116,7 +117,7 @@ export const phoneAuth = async (
         throw new Error('Phone number is required');
       }
 
-      const response = await fetch(`${process.env.API_BASE_URL}/auth/verify-otp`, {
+      const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -143,12 +144,12 @@ export const phoneAuth = async (
 
 export const sendResetPasswordEmail = async (email: string) => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/auth/send-reset-password-email`, {
+    const response = await fetch(`${API_BASE_URL}/auth/send-reset-password-email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        frontendUrl: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
+        frontendUrl: `${NEXT_PUBLIC_APP_URL}/reset-password`,
       }),
     });
 
@@ -168,7 +169,7 @@ export const sendResetPasswordEmail = async (email: string) => {
 
 export const resetPassword = async (token: string, password: string) => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/auth/reset-password`, {
+    const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, password }),
@@ -195,7 +196,7 @@ export const sendEmailVerification = async (newEmail: string) => {
       return { success: false, error: 'No authentication token' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/auth/change-email`, {
+    const response = await fetch(`${API_BASE_URL}/auth/change-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -203,7 +204,7 @@ export const sendEmailVerification = async (newEmail: string) => {
       },
       body: JSON.stringify({
         newEmail,
-        frontendUrl: process.env.NEXT_PUBLIC_APP_URL,
+        frontendUrl: NEXT_PUBLIC_APP_URL,
       }),
     });
 
@@ -223,7 +224,7 @@ export const sendEmailVerification = async (newEmail: string) => {
 
 export const verifyNewEmail = async (token: string) => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/auth/verify-new-email`, {
+    const response = await fetch(`${API_BASE_URL}/auth/verify-new-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

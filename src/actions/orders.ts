@@ -1,7 +1,7 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import { COOKIE_NAMES } from '@/utils/tokens';
+import { getAuthToken } from '@/utils/auth';
+import { API_BASE_URL } from '@/utils/config';
 import { OrderStatus } from '@/utils/interfaces';
 
 export interface Order {
@@ -33,19 +33,14 @@ export interface UpdateOrderData {
   participants: number;
 }
 
-async function getAccessToken(): Promise<string | null> {
-  const cookieStore = await cookies();
-  return cookieStore.get(COOKIE_NAMES.ACCESS_TOKEN)?.value || null;
-}
-
 export async function createOrder(data: CreateOrderData) {
   try {
-    const token = await getAccessToken();
+    const token = await getAuthToken();
     if (!token) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/orders`, {
+    const response = await fetch(`${API_BASE_URL}/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,12 +66,12 @@ export async function createOrder(data: CreateOrderData) {
 
 export async function getOrders(): Promise<{ success: boolean; data?: Order[]; error?: string }> {
   try {
-    const token = await getAccessToken();
+    const token = await getAuthToken();
     if (!token) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/orders`, {
+    const response = await fetch(`${API_BASE_URL}/orders`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -99,12 +94,12 @@ export async function getOrders(): Promise<{ success: boolean; data?: Order[]; e
 
 export async function updateOrder(id: number, data: UpdateOrderData) {
   try {
-    const token = await getAccessToken();
+    const token = await getAuthToken();
     if (!token) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/orders/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -130,12 +125,12 @@ export async function updateOrder(id: number, data: UpdateOrderData) {
 
 export async function deleteOrder(id: number) {
   try {
-    const token = await getAccessToken();
+    const token = await getAuthToken();
     if (!token) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/orders/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

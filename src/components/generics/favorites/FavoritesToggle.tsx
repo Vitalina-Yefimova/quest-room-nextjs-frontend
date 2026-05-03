@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import {
-  addFavorite,
-  removeFavorite,
-  getUserFavorites,
-} from "@/actions/favorites";
-import StarIcon from "@/components/icons/StarIcon";
-import StarOutlineIcon from "@/components/icons/StarOutlineIcon";
-import CustomCursorWrapper from "@/components/generics/customCursor/CustomCursorWrapper";
-import type { User } from "@/utils/interfaces";
+import { addFavorite, getUserFavorites, removeFavorite } from '@/actions/favorites';
+import CustomCursorWrapper from '@/components/generics/customCursor/CustomCursorWrapper';
+import StarIcon from '@/components/icons/StarIcon';
+import StarOutlineIcon from '@/components/icons/StarOutlineIcon';
+import type { User } from '@/utils/interfaces';
+import { useEffect, useState } from 'react';
 
 interface FavoritesToggleProps {
   questId: string | number;
@@ -22,7 +18,7 @@ interface FavoritesToggleProps {
 export default function FavoritesToggle({
   questId,
   user,
-  className = "",
+  className = '',
   iconOnly = true,
   onChange,
 }: FavoritesToggleProps) {
@@ -32,7 +28,7 @@ export default function FavoritesToggle({
     if (user && questId) {
       const favorites = await getUserFavorites();
       const exists = favorites.some(
-        (favorite: { questId: string }) => favorite.questId === questId.toString()
+        (favorite: { questId: string }) => favorite.questId === questId.toString(),
       );
       setIsFavorite(exists);
     }
@@ -44,7 +40,7 @@ export default function FavoritesToggle({
 
   const toggleFavorite = async () => {
     if (!user) return;
-    
+
     if (isFavorite) {
       await removeFavorite(questId.toString());
       setIsFavorite(false);
@@ -61,7 +57,7 @@ export default function FavoritesToggle({
   return (
     <CustomCursorWrapper>
       <button
-        onClick={(e) => {
+        onClick={e => {
           e.preventDefault();
           e.stopPropagation();
           toggleFavorite();
@@ -77,12 +73,10 @@ export default function FavoritesToggle({
         ) : (
           <span
             className={`flex items-center justify-center text-white font-semibold min-w-[200px] h-[50px] rounded-full shadow-lg transition duration-300 cursor-none ${
-              isFavorite
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-[#F28A0F] hover:bg-[#d97706]"
+              isFavorite ? 'bg-red-600 hover:bg-red-700' : 'bg-[#F28A0F] hover:bg-[#d97706]'
             }`}
           >
-            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           </span>
         )}
       </button>

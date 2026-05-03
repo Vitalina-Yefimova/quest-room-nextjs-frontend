@@ -33,7 +33,7 @@ export default function ForgotPasswordPopup({
         Forgot your password?
       </h2>
       <p className="text-sm text-center text-[#E5E5E5] pb-6">
-        Enter your email and we'll send you a link to reset it.
+        Enter your email and we&apos;ll send you a link to reset it.
       </p>
       <BaseForm
         schema={schema}

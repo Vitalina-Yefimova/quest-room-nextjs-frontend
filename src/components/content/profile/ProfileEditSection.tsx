@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from "react";
-import BaseForm from "@/components/generics/forms/BaseForm";
-import { User } from "@/utils/interfaces";
-import { updateUser } from "@/actions/user";
-import { sendEmailVerification } from "@/actions/auth";
-import { profileEditSchema, type ProfileEditFormValues } from "./schemas/profileSchemas";
+import { sendEmailVerification } from '@/actions/auth';
+import { updateUser } from '@/actions/user';
+import BaseForm from '@/components/generics/forms/BaseForm';
+import { User } from '@/utils/interfaces';
+import { useState } from 'react';
+import { profileEditSchema, type ProfileEditFormValues } from './schemas/profileSchemas';
 
 interface ProfileEditSectionProps {
   user: User;
@@ -32,11 +32,11 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
     const result = await updateUser(payload);
 
     if (!result.success) {
-      if (result.error?.includes("already")) {
-        setEmailError("This email is already in use.");
+      if (result.error?.includes('already')) {
+        setEmailError('This email is already in use.');
         return;
       }
-      throw new Error(result.error || "Failed to update profile");
+      throw new Error(result.error || 'Failed to update profile');
     }
 
     onUserUpdate(result.user!);
@@ -47,7 +47,7 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
 
   const sendVerification = async () => {
     if (!user.newEmail) {
-      setEmailError("No email to verify");
+      setEmailError('No email to verify');
       return;
     }
 
@@ -58,7 +58,7 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
     const result = await sendEmailVerification(user.newEmail);
 
     if (!result.success) {
-      setEmailError(result.error || "Failed to send verification email");
+      setEmailError(result.error || 'Failed to send verification email');
     } else {
       setEmailSent(true);
     }
@@ -72,16 +72,16 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
     (!user?.email || user?.email !== user?.newEmail);
 
   const fields = [
-    { name: "firstName", label: "First Name" },
-    { name: "lastName", label: "Last Name" },
+    { name: 'firstName', label: 'First Name' },
+    { name: 'lastName', label: 'Last Name' },
     {
-      name: "phone",
-      label: "Phone",
-      disabled: user.authMethod === "phone",
+      name: 'phone',
+      label: 'Phone',
+      disabled: user.authMethod === 'phone',
     },
     {
-      name: "email",
-      label: "Email",
+      name: 'email',
+      label: 'Email',
       disabled: user.emailVerified === true && !user.newEmail,
       showVerifyButton,
       onVerifyClick: sendVerification,
@@ -97,25 +97,22 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
         submitText="Save Changes"
         onSubmit={handleSubmit}
         defaultValues={{
-          firstName: user.firstName || "",
-          lastName: user.lastName || "",
-          phone: user.phone || "",
-          email: user.newEmail || user.email || "",
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          phone: user.phone || '',
+          email: user.newEmail || user.email || '',
         }}
         isSuccess={isSuccess}
         successMessage="Changes saved successfully"
       />
 
-      {emailError && (
-        <p className="text-red-500 text-sm text-center mt-2">{emailError}</p>
-      )}
+      {emailError && <p className="text-red-500 text-sm text-center mt-2">{emailError}</p>}
 
       {emailSent && (
         <p className="text-green-500 text-sm text-center mt-2">
           Verification email sent! Please check your inbox.
         </p>
       )}
-
     </>
   );
 }

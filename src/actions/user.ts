@@ -1,8 +1,13 @@
 'use server';
 
-import { User } from '@/utils/interfaces';
+import {
+  changePasswordSchema,
+  type ChangePasswordFormValues,
+  type ProfileEditFormValues,
+} from '@/components/content/profile/schemas/profileSchemas';
 import { getAuthToken } from '@/utils/auth';
-import { profileEditSchema, changePasswordSchema, type ProfileEditFormValues, type ChangePasswordFormValues } from '@/components/content/profile/schemas/profileSchemas';
+import { API_BASE_URL } from '@/utils/config';
+import { User } from '@/utils/interfaces';
 
 export const getUser = async (): Promise<User | null> => {
   try {
@@ -12,27 +17,32 @@ export const getUser = async (): Promise<User | null> => {
       return null;
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
       return null;
     }
     return response.json();
-  } catch (error) {
+  } catch {
     return null;
   }
 };
 
 export const updateUser = async (
-  userData: ProfileEditFormValues & { oldPassword?: string; password?: string; newEmail?: string }
+  userData: ProfileEditFormValues & { oldPassword?: string; password?: string; newEmail?: string },
 ) => {
   try {
-    const profileData: any = {
+    const profileData: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+      email?: string;
+    } = {
       firstName: userData.firstName,
       lastName: userData.lastName,
       phone: userData.phone,
@@ -52,10 +62,10 @@ export const updateUser = async (
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     };
 
-    const response = await fetch(`${process.env.API_BASE_URL}/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'PATCH',
       headers,
       body: JSON.stringify(userData),
@@ -86,11 +96,11 @@ export const changePassword = async (data: ChangePasswordFormValues) => {
       return { success: false, error: 'No authentication token' };
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         password: validatedData.newPassword,
@@ -112,4 +122,3 @@ export const changePassword = async (data: ChangePasswordFormValues) => {
     return { success: false, error: 'Internal server error' };
   }
 };
-

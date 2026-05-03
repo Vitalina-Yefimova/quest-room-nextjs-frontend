@@ -1,8 +1,7 @@
-import PageTitle from "@/components/generics/title/PageTitle";
-import VectorContactsIcon from "@/components/icons/VectorContactsIcon";
-import ContactInfo from "@/components/content/ContactInfo";
-import GoogleMap from "@/components/content/GoogleMap";
-import contactsBackground from "@/assets/images/contacts-background.png";
+import contactsBackground from '@/assets/images/contacts-background.png';
+import ContactInfo from '@/components/content/ContactInfo';
+import PageTitle from '@/components/generics/title/PageTitle';
+import VectorContactsIcon from '@/components/icons/VectorContactsIcon';
 
 export default function ContactsPage() {
   return (
