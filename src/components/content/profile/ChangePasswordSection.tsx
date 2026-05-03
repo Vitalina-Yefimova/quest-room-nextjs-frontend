@@ -2,15 +2,10 @@
 
 import { changePassword } from '@/actions/user';
 import BaseForm from '@/components/generics/forms/BaseForm';
-import { User } from '@/utils/interfaces';
 import { useState } from 'react';
 import { changePasswordSchema, type ChangePasswordFormValues } from './schemas/profileSchemas';
 
-interface ChangePasswordSectionProps {
-  user: User;
-}
-
-export default function ChangePasswordSection({ user }: ChangePasswordSectionProps) {
+export default function ChangePasswordSection() {
   const [isSuccess, setSuccess] = useState(false);
 
   const handleSubmit = async (data: ChangePasswordFormValues) => {

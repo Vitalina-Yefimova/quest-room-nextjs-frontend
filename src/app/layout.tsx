@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
+import { Suspense } from "react";
 import "@/globals.css";
 import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${raleway.variable} font-sans`}>
         <div className="min-h-dvh flex flex-col">
-          <Header className="bg-[#1E1C1C]" />
+          <Suspense fallback={<div className="h-20" aria-hidden />}>
+            <Header className="bg-[#1E1C1C]" />
+          </Suspense>
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

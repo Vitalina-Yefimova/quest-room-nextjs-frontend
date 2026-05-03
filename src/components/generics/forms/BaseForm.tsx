@@ -2,7 +2,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
-import { useForm, UseFormRegisterReturn } from 'react-hook-form';
+import {
+  useForm,
+  type DefaultValues,
+  type FieldValues,
+  type Path,
+  type PathValue,
+  type Resolver,
+  type SubmitHandler,
+  type UseFormRegisterReturn,
+} from 'react-hook-form';
+import type { ZodType } from 'zod';
 import Button from '../../generics/button/Button';
 
 interface Field {
@@ -19,32 +29,31 @@ interface Field {
   disabled?: boolean;
 }
 
-interface BaseFormProps<T = any> {
+interface BaseFormProps<T extends FieldValues> {
   fields: Field[];
-  schema: import('zod').ZodSchema<T>;
+  schema: ZodType<T, T>;
   submitText?: string;
   onSubmit: (data: T) => Promise<void>;
-  defaultValues?: Partial<T>;
+  defaultValues?: DefaultValues<T>;
   isSuccess?: boolean;
   successMessage?: string;
   resetOnSuccess?: boolean;
-  formMethods?: ReturnType<typeof useForm<any>>;
   showTermsCheckbox?: boolean;
 }
 
-export default function BaseForm<T = any>({
+export default function BaseForm<T extends FieldValues>({
   fields,
   schema,
   submitText = 'Submit',
   onSubmit,
-  defaultValues = {},
+  defaultValues = {} as DefaultValues<T>,
   isSuccess = false,
   successMessage,
   resetOnSuccess,
   showTermsCheckbox = true,
 }: BaseFormProps<T>): JSX.Element {
-  const { register, handleSubmit, watch, setValue, reset } = useForm<any>({
-    resolver: zodResolver(schema as any),
+  const { register, handleSubmit, watch, setValue, reset } = useForm<T>({
+    resolver: zodResolver(schema) as Resolver<T>,
     defaultValues,
   });
 
@@ -54,8 +63,12 @@ export default function BaseForm<T = any>({
   const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    for (const key in defaultValues) {
-      setValue(key as any, defaultValues[key]!);
+    if (!defaultValues) return;
+    for (const key of Object.keys(defaultValues) as Path<T>[]) {
+      const val = defaultValues[key as keyof typeof defaultValues];
+      if (val !== undefined) {
+        setValue(key, val as PathValue<T, typeof key>);
+      }
     }
   }, [defaultValues, setValue]);
 
@@ -67,7 +80,7 @@ export default function BaseForm<T = any>({
     }
   }, [isSuccess, resetOnSuccess, reset, isChecked]);
 
-  const internalSubmit = async (data: T) => {
+  const internalSubmit: SubmitHandler<T> = async data => {
     if (showTermsCheckbox && !isChecked) return;
     setIsLoading(true);
     setErrorMessage(null);
@@ -101,9 +114,10 @@ export default function BaseForm<T = any>({
           render,
           disabled,
         }) => {
-          const value = watch(name as any);
+          const fieldName = name as Path<T>;
+          const value = watch(fieldName);
           const isFilled = value?.toString().length > 0;
-          const fieldProps = register(name as any);
+          const fieldProps = register(fieldName);
 
           if (type === 'hidden') {
             return <input key={name} {...fieldProps} type="hidden" defaultValue={defaultValue} />;

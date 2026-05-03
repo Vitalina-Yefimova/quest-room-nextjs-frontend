@@ -3,7 +3,6 @@
 import { emailAuth } from '@/actions/auth';
 import ForgotPasswordPopup from '@/components/content/popups/ForgotPasswordPopup';
 import BaseForm from '@/components/generics/forms/BaseForm';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   signInSchema,
@@ -19,7 +18,6 @@ export default function EmailAuthForm({
   authType: 'login' | 'register';
   onSuccess: () => void;
 }) {
-  const router = useRouter();
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleSubmit = async (data: SignInFormValues | SignUpFormValues) => {

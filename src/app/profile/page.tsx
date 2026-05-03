@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getUser } from '@/actions/user';
@@ -29,7 +30,9 @@ export default async function ProfilePage({
       </div>
 
       <div className="flex flex-col items-center pt-30 min-h-screen bg-[#1E1E1E] text-white px-4">
-        <ProfileTabs user={user} initialTab={selectedTab} />
+        <Suspense fallback={null}>
+          <ProfileTabs user={user} initialTab={selectedTab} />
+        </Suspense>
       </div>
     </div>
   );

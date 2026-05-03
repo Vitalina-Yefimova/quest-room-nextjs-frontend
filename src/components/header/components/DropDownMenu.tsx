@@ -23,7 +23,7 @@ export default function DropDownMenu({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [onClose]);
 
   const goTo = (path: string) => {
     if (isNavigating.current) return;

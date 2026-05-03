@@ -5,7 +5,7 @@ import CustomCursorWrapper from '@/components/generics/customCursor/CustomCursor
 import StarIcon from '@/components/icons/StarIcon';
 import StarOutlineIcon from '@/components/icons/StarOutlineIcon';
 import type { User } from '@/utils/interfaces';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface FavoritesToggleProps {
   questId: string | number;
@@ -24,7 +24,7 @@ export default function FavoritesToggle({
 }: FavoritesToggleProps) {
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const checkFavorite = async () => {
+  const checkFavorite = useCallback(async () => {
     if (user && questId) {
       const favorites = await getUserFavorites();
       const exists = favorites.some(
@@ -32,11 +32,11 @@ export default function FavoritesToggle({
       );
       setIsFavorite(exists);
     }
-  };
+  }, [user, questId]);
 
   useEffect(() => {
-    checkFavorite();
-  }, [user, questId]);
+    void checkFavorite();
+  }, [checkFavorite]);
 
   const toggleFavorite = async () => {
     if (!user) return;

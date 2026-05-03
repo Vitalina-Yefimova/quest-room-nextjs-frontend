@@ -19,10 +19,11 @@ export default function ProfileEditSection({ user, onUserUpdate }: ProfileEditSe
   const [emailSent, setEmailSent] = useState(false);
 
   const handleSubmit = async (data: ProfileEditFormValues) => {
-    const payload: any = {
+    const payload: ProfileEditFormValues & { newEmail?: string } = {
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone,
+      email: data.email,
     };
 
     if (data.email && data.email !== user.email) {

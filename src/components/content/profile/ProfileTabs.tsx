@@ -9,6 +9,15 @@ import OrdersSection from './OrdersSection';
 import ProfileEditSection from './ProfileEditSection';
 import ProfileInfoSection from './ProfileInfoSection';
 
+type ProfileTab = 'info' | 'edit' | 'password' | 'orders' | 'favorites';
+
+const PROFILE_TABS = new Set<ProfileTab>(['info', 'edit', 'password', 'orders', 'favorites']);
+
+function parseProfileTab(tab: string | undefined, fallback: ProfileTab): ProfileTab {
+  if (tab && PROFILE_TABS.has(tab as ProfileTab)) return tab as ProfileTab;
+  return fallback;
+}
+
 interface ProfileTabsProps {
   user: User;
   initialTab?: string;
@@ -16,9 +25,9 @@ interface ProfileTabsProps {
 
 export default function ProfileTabs({ user: initialUser, initialTab = 'info' }: ProfileTabsProps) {
   const [user, setUser] = useState<User>(initialUser);
-  const [selectedTab, setSelectedTab] = useState<
-    'info' | 'edit' | 'password' | 'orders' | 'favorites'
-  >(initialTab as any);
+  const [selectedTab, setSelectedTab] = useState<ProfileTab>(() =>
+    parseProfileTab(initialTab, 'info'),
+  );
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -29,7 +38,7 @@ export default function ProfileTabs({ user: initialUser, initialTab = 'info' }: 
       tabFromUrl === 'orders' ||
       tabFromUrl === 'favorites'
     ) {
-      setSelectedTab(tabFromUrl);
+      setSelectedTab(tabFromUrl as ProfileTab);
     }
   }, [searchParams]);
 
@@ -71,7 +80,7 @@ export default function ProfileTabs({ user: initialUser, initialTab = 'info' }: 
         {selectedTab === 'edit' && (
           <ProfileEditSection user={user} onUserUpdate={handleUserUpdate} />
         )}
-        {selectedTab === 'password' && user?.hasPassword && <ChangePasswordSection user={user} />}
+        {selectedTab === 'password' && user?.hasPassword && <ChangePasswordSection />}
         {selectedTab === 'orders' && <OrdersSection />}
         {selectedTab === 'favorites' && <FavoritesSection />}
       </div>
