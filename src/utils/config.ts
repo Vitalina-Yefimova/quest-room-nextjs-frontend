@@ -10,7 +10,7 @@ function inferMode(): (typeof modes)[number] {
 
 const schema = z.object({
   MODE: z.enum(modes),
-  API_BASE_URL: z
+  NEXT_PUBLIC_API_BASE_URL: z
     .string()
     .trim()
     .min(1)
@@ -29,9 +29,10 @@ export type AppEnv = z.infer<typeof schema>;
 
 export const env: AppEnv = schema.parse({
   MODE: inferMode(),
-  API_BASE_URL: process.env.API_BASE_URL ?? '',
+  NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL ?? '',
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL ?? '',
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '',
 });
 
-export const { MODE, API_BASE_URL, NEXT_PUBLIC_APP_URL, NEXT_PUBLIC_GOOGLE_MAPS_API_KEY } = env;
+export const { MODE, NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_APP_URL, NEXT_PUBLIC_GOOGLE_MAPS_API_KEY } =
+  env;

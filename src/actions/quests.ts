@@ -1,10 +1,10 @@
 'use server';
 
 import { Quest } from '@/utils/interfaces';
-import { API_BASE_URL } from '@/utils/config';
+import { NEXT_PUBLIC_API_BASE_URL } from '@/utils/config';
 
 export const getAllQuests = async (): Promise<Quest[]> => {
-  const response = await fetch(`${API_BASE_URL}/quests`, {
+  const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/quests`, {
     cache: 'no-store',
   });
   if (!response.ok) {
@@ -14,7 +14,7 @@ export const getAllQuests = async (): Promise<Quest[]> => {
 };
 
 export const getQuestById = async (id: string): Promise<Quest> => {
-  const response = await fetch(`${API_BASE_URL}/quests/${id}`, {
+  const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/quests/${id}`, {
     cache: 'no-store',
   });
   if (!response.ok) {

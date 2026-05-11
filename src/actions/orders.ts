@@ -1,7 +1,7 @@
 'use server';
 
 import { getAuthToken } from '@/utils/auth';
-import { API_BASE_URL } from '@/utils/config';
+import { NEXT_PUBLIC_API_BASE_URL } from '@/utils/config';
 import { OrderStatus } from '@/utils/interfaces';
 
 export interface Order {
@@ -40,7 +40,7 @@ export async function createOrder(data: CreateOrderData) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${API_BASE_URL}/orders`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export async function getOrders(): Promise<{ success: boolean; data?: Order[]; e
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${API_BASE_URL}/orders`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/orders`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -99,7 +99,7 @@ export async function updateOrder(id: number, data: UpdateOrderData) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/orders/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export async function deleteOrder(id: number) {
       return { success: false, error: 'No token found' };
     }
 
-    const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/orders/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

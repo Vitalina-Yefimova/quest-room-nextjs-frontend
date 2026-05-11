@@ -6,7 +6,7 @@ import {
   type ProfileEditFormValues,
 } from '@/components/content/profile/schemas/profileSchemas';
 import { getAuthToken } from '@/utils/auth';
-import { API_BASE_URL } from '@/utils/config';
+import { NEXT_PUBLIC_API_BASE_URL } from '@/utils/config';
 import { User } from '@/utils/interfaces';
 
 export const getUser = async (): Promise<User | null> => {
@@ -17,7 +17,7 @@ export const getUser = async (): Promise<User | null> => {
       return null;
     }
 
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/users`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export const updateUser = async (
       Authorization: `Bearer ${token}`,
     };
 
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/users`, {
       method: 'PATCH',
       headers,
       body: JSON.stringify(userData),
@@ -96,7 +96,7 @@ export const changePassword = async (data: ChangePasswordFormValues) => {
       return { success: false, error: 'No authentication token' };
     }
 
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/users`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

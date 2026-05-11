@@ -1,7 +1,7 @@
 'use server';
 
 import { getAuthToken } from '@/utils/auth';
-import { API_BASE_URL } from '@/utils/config';
+import { NEXT_PUBLIC_API_BASE_URL } from '@/utils/config';
 
 export const addFavorite = async (questId: string) => {
   try {
@@ -11,7 +11,7 @@ export const addFavorite = async (questId: string) => {
       throw new Error('No authentication token');
     }
 
-    const response = await fetch(`${API_BASE_URL}/favorites`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/favorites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export const removeFavorite = async (questId: string) => {
       throw new Error('No authentication token');
     }
 
-    const response = await fetch(`${API_BASE_URL}/favorites/${questId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/favorites/${questId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const getUserFavorites = async () => {
       throw new Error('No authentication token');
     }
 
-    const response = await fetch(`${API_BASE_URL}/favorites`, {
+    const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/favorites`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
