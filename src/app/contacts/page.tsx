@@ -1,5 +1,6 @@
 import contactsBackground from '@/assets/images/contacts-background.png';
 import ContactInfo from '@/components/content/ContactInfo';
+import GoogleMap from '@/components/content/GoogleMap';
 import PageTitle from '@/components/generics/title/PageTitle';
 import VectorContactsIcon from '@/components/icons/VectorContactsIcon';
 
@@ -20,7 +21,7 @@ export default function ContactsPage() {
         <VectorContactsIcon className="ml-[136px] mr-[150px]" />
         <section className="flex gap-[157px] pr-[150px] pb-[121px]">
           <ContactInfo />
-          {/* <GoogleMap /> */}
+          <GoogleMap />
         </section>
       </div>
     </section>
